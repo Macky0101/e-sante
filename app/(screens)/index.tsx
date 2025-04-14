@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 import {
   View,
   Text,
@@ -8,259 +8,256 @@ import {
   Image,
   TextInput,
   StatusBar,
-} from "react-native"
-import { useRouter } from "expo-router"
-import { Ionicons, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons"
-import { DrawerActions, useNavigation } from "@react-navigation/native"
-import { SafeAreaView } from 'react-native-safe-area-context';
+} from "react-native";
+import { useRouter } from "expo-router";
+import {
+  Ionicons,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // Données des spécialités médicales
 const specialties = [
   {
     id: "0",
-    name: "Patient",
-    icon: "account-circle",
+    name: "Dossiers",
+    icon: "folder-account",
     iconType: "materialcommunity",
     color: "#4CAF50",
     description: "Gestion des patients",
+    route: "/(screens)/patients/patients",
   },
   {
     id: "1",
-    name: "Médecine générale",
-    icon: "medical-bag",
-    iconType: "materialcommunity",
-    color: "#4CAF50",
+    name: "Consultations",
+    icon: "stethoscope",
+    iconType: "fontawesome",
+    color: "#388E3C",
     description: "Consultations et soins médicaux généraux",
-  },
-  {
-    id: "2",
-    name: "Dentiste",
-    icon: "tooth",
-    iconType: "materialcommunity",
-    color: "#2196F3",
-    description: "Soins dentaires et hygiène bucco-dentaire",
+    route: "/(screens)/consultation/consultations",
   },
   {
     id: "3",
-    name: "Gynécologie",
-    icon: "baby",
-    iconType: "fontawesome",
+    name: "Accouchements",
+    icon: "baby-carriage",
+    iconType: "materialcommunity",
     color: "#E91E63",
-    description: "Suivi de grossesse et accouchement",
+    description: "Suivi des accouchements",
+    route: "/(screens)/cpn",
   },
   {
-    id: "4",
-    name: "Dermatologie",
-    icon: "allergy",
+    id: "2",
+    name: "CPN",
+    icon: "baby-face-outline",
     iconType: "materialcommunity",
-    color: "#FF9800",
-    description: "Traitement des affections cutanées",
+    color: "#2196F3",
+    description: "Consultations Prénatales",
+    route: "/(screens)/accouchements",
   },
   {
     id: "5",
-    name: "Cardiologie",
-    icon: "heart-pulse",
+    name: "CPoN",
+    icon: "baby-bottle-outline",
     iconType: "materialcommunity",
     color: "#F44336",
-    description: "Suivi et traitement des maladies cardiaques",
+    description: "Consultations Post Natales",
+    route: "/(screens)/accouchements",
+  },
+  {
+    id: "4",
+    name: "Avortement",
+    icon: "alert-circle-outline",
+    iconType: "materialcommunity",
+    color: "#FF9800",
+    description: "Suivi des avortements",
+    route: "/(screens)/accouchements",
   },
   {
     id: "6",
-    name: "Ophtalmologie",
-    icon: "eye",
-    iconType: "ionicons",
+    name: "Planning",
+    icon: "calendar-heart",
+    iconType: "materialcommunity",
     color: "#9C27B0",
-    description: "Soins des yeux et correction de la vision",
+    description: "Gestion planning familial",
+    route: "/(screens)/accouchements",
   },
   {
     id: "7",
-    name: "Endocrinologie",
-    icon: "flask",
-    iconType: "fontawesome",
+    name: "Vaccination",
+    icon: "needle",
+    iconType: "materialcommunity",
     color: "#00BCD4",
-    description: "Traitement des troubles hormonaux",
+    description: "Gestion des vaccinations",
+    route: "/(screens)/accouchements",
   },
   {
     id: "8",
-    name: "Pédiatrie",
-    icon: "baby-carriage",
-    iconType: "fontawesome",
+    name: "PMI/SUIVI NUTRITIONEL",
+    icon: "food-apple-outline",
+    iconType: "materialcommunity",
     color: "#8BC34A",
-    description: "Soins médicaux pour enfants",
+    description: "Protection maternelle infantile",
+    route: "/(screens)/accouchements",
   },
   {
     id: "9",
-    name: "Neurologie",
-    icon: "brain",
-    iconType: "fontawesome",
+    name: "SUIVI MALADIE CHRONIQUE",
+    icon: "heart-pulse",
+    iconType: "materialcommunity",
     color: "#607D8B",
-    description: "Traitement des troubles du système nerveux",
+    description: "Suivi des maladies chroniques",
+    route: "/(screens)/accouchements",
   },
   {
     id: "10",
-    name: "Orthopédie",
-    icon: "bone",
-    iconType: "fontawesome",
+    name: "UNITE DENTAIRE",
+    icon: "tooth-outline",
+    iconType: "materialcommunity",
     color: "#795548",
-    description: "Traitement des problèmes musculo-squelettiques",
+    description: "Gestion de la fonction dentaire",
+    route: "/(screens)/accouchements",
   },
   {
     id: "11",
-    name: "Psychiatrie",
-    icon: "brain",
+    name: "ANALYSES",
+    icon: "flask-outline",
     iconType: "materialcommunity",
-    color: "#673AB7",
-    description: "Soins de santé mentale",
+    color: "#3F51B5",
+    description: "Faire des analyses",
+    route: "/(screens)/accouchements",
   },
   {
     id: "12",
-    name: "ORL",
-    icon: "ear-hearing",
+    name: "BILANS",
+    icon: "clipboard-text-outline",
     iconType: "materialcommunity",
     color: "#FF5722",
-    description: "Oto-rhino-laryngologie",
+    description: "Faire des bilans médicaux",
+    route: "/(screens)/accouchements",
   },
-]
+];
 
 // Composant pour afficher une icône selon son type
 const DynamicIcon = ({ name, type, size, color }) => {
   if (type === "ionicons") {
-    return <Ionicons name={name} size={size} color={color} />
+    return <Ionicons name={name} size={size} color={color} />;
   } else if (type === "fontawesome") {
-    return <FontAwesome5 name={name} size={size} color={color} />
+    return <FontAwesome5 name={name} size={size} color={color} />;
   } else if (type === "materialcommunity") {
-    return <MaterialCommunityIcons name={name} size={size} color={color} />
+    return <MaterialCommunityIcons name={name} size={size} color={color} />;
   }
-  return null
-}
+  return null;
+};
 
 // Composant pour une carte de spécialité
 const SpecialtyCard = ({ item, onPress }) => {
   return (
-    <TouchableOpacity style={styles.specialtyCard} onPress={() => onPress(item)} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={styles.specialtyCard}
+      onPress={() => onPress(item)}
+      activeOpacity={0.7}
+    >
       <View style={[styles.iconContainer, { backgroundColor: item.color }]}>
-        <DynamicIcon name={item.icon} type={item.iconType} size={24} color="#FFF" />
+        <DynamicIcon
+          name={item.icon}
+          type={item.iconType}
+          size={24}
+          color="#FFF"
+        />
       </View>
       <Text style={styles.specialtyName}>{item.name}</Text>
       <Text style={styles.specialtyDescription} numberOfLines={2}>
         {item.description}
       </Text>
     </TouchableOpacity>
-  )
-}
-
+  );
+};
 
 export default function HomePage() {
-  const router = useRouter()
-  const navigation = useNavigation()
-  const [searchQuery, setSearchQuery] = useState("")
+  const router = useRouter();
+  const navigation = useNavigation();
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Filtrer les spécialités en fonction de la recherche
   const filteredSpecialties = searchQuery
     ? specialties.filter(
         (item) =>
           item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchQuery.toLowerCase()),
+          item.description.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    : specialties
+    : specialties;
 
   const handleSpecialtyPress = (specialty) => {
-    console.log(`Navigating to ${specialty.name}`)
-
-    // Si vous naviguez vers la liste des patients
-    if (specialty.id === "0") {
-        router.push("/(screens)/patients/patients");
-    }
-    // Pour les autres spécialités, vous pouvez passer l'ID comme paramètre
-    else {
-      // router.push(`/specialties/${specialty.id}`) 
-    }
-  }
-
+    console.log(`Navigating to ${specialty.name}`);
+    router.push(specialty.route);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-    <StatusBar barStyle="dark-content" backgroundColor="#f8f9fa" />
+      <StatusBar barStyle="dark-content" backgroundColor="#f8f9fa" />
 
-    {/* En-tête */}
-    <View style={styles.header}>
-      <View style={styles.headerTop}>
-        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-          <Ionicons name="menu" size={28} color="#2b7a78" />
-        </TouchableOpacity>
-        <View style={styles.headerTitleContainer}>
-          <Text style={styles.greeting}>Bonjour,</Text>
-          <Text style={styles.userName}>Mankan Camara</Text>
-        </View>
-        <TouchableOpacity style={styles.profileButton}>
-          <Ionicons name="person-circle-outline" size={40} color="#2b7a78" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Barre de recherche */}
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Rechercher une spécialité..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
-        {searchQuery ? (
-          <TouchableOpacity onPress={() => setSearchQuery("")}>
-            <Ionicons name="close-circle" size={20} color="#666" />
+      {/* En-tête */}
+      <View style={styles.header}>
+        <View style={styles.headerTop}>
+          <TouchableOpacity
+            style={styles.menuButton}
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          >
+            <Ionicons name="menu" size={28} color="#2b7a78" />
           </TouchableOpacity>
-        ) : null}
-      </View>
-    </View>
-
-    <ScrollView showsVerticalScrollIndicator={false}>
-    
-      {/* Section des spécialités médicales */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Spécialités médicales</Text>
-        </View>
-
-        <View style={styles.specialtiesGrid}>
-          {filteredSpecialties.map((specialty) => (
-            <SpecialtyCard key={specialty.id} item={specialty} onPress={handleSpecialtyPress} />
-          ))}
-        </View>
-      </View>
-
-      {/* Section des articles de santé */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Articles de santé</Text>
-          <TouchableOpacity>
-            <Text style={styles.seeAllText}>Voir tout</Text>
+          <View style={styles.headerTitleContainer}>
+            <Text style={styles.greeting}>Bonjour,</Text>
+            <Text style={styles.userName}>Mankan Camara</Text>
+          </View>
+          <TouchableOpacity style={styles.profileButton}>
+            <Ionicons name="person-circle-outline" size={40} color="#2b7a78" />
           </TouchableOpacity>
         </View>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.articlesContainer}>
-          {[1, 2, 3].map((item) => (
-            <TouchableOpacity key={item} style={styles.articleCard}>
-              <Image source={{ uri: `https://picsum.photos/300/200?random=${item}` }} style={styles.articleImage} />
-              <View style={styles.articleContent}>
-                <Text style={styles.articleTitle}>
-                  {item === 1
-                    ? "Comment rester en bonne santé"
-                    : item === 2
-                      ? "Nutrition et bien-être"
-                      : "Exercices quotidiens"}
-                </Text>
-                <Text style={styles.articleDate}>
-                  {item === 1 ? "10 Juin 2024" : item === 2 ? "5 Juin 2024" : "1 Juin 2024"}
-                </Text>
-              </View>
+        {/* Barre de recherche */}
+        <View style={styles.searchContainer}>
+          <Ionicons
+            name="search"
+            size={20}
+            color="#666"
+            style={styles.searchIcon}
+          />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Rechercher une spécialité..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          {searchQuery ? (
+            <TouchableOpacity onPress={() => setSearchQuery("")}>
+              <Ionicons name="close-circle" size={20} color="#666" />
             </TouchableOpacity>
-          ))}
-        </ScrollView>
+          ) : null}
+        </View>
       </View>
-    </ScrollView>
-  </SafeAreaView>
-  )
+
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Section des spécialités médicales */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Spécialités médicales</Text>
+          </View>
+
+          <View style={styles.specialtiesGrid}>
+            {filteredSpecialties.map((specialty) => (
+              <SpecialtyCard
+                key={specialty.id}
+                item={specialty}
+                onPress={handleSpecialtyPress}
+              />
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -403,5 +400,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#666",
   },
-})
-
+});
