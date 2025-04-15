@@ -14,6 +14,7 @@ import FormStepper from "../../components/stepper/FormStepper"
 import { useToast } from "../../components/toast/ToastProvider"
 import { useLoading } from "../../components/loading/LoadingProvider"
 import patientService from "../../services/patientService"
+// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 // Options pour le genre
 const genreOptions = [
@@ -27,6 +28,18 @@ const statutMatrimonialOptions = [
   { value: "marie", label: "Marié(e)" },
   { value: "divorce", label: "Divorcé(e)" },
   { value: "veuf", label: "Veuf/Veuve" },
+]
+const EthnieOption = [
+  {value: "bamara", label: "Bambara"},
+  {value: "malinke", label: "Malinké"},
+  {value: "soninké", label: "Soninké"},
+  {value: "peul", label: "Peul"},
+  {value: "arabe", label: "Arabe"},
+  {value: "tamasheq", label: "Tamasheq"},
+  {value: "bobo", label: "Bobo"},
+  {value: "dogon", label: "Dogon"},
+  {value: "minianka", label: "Minianka"},
+  {value: "senufo", label: "Sénoufo"},
 ]
 
 export default function PatientFormScreen() {
@@ -55,6 +68,10 @@ export default function PatientFormScreen() {
     statut_matrimonial: "",
     hors_haire: false,
     alerte: false,
+    ethnie:"",
+    region: "",
+    District: "",
+    Village: "",
   })
 
   // Charger les données du patient si en mode édition
@@ -83,6 +100,10 @@ export default function PatientFormScreen() {
         statut_matrimonial: patient.statut_matrimonial || "",
         hors_haire: patient.hors_haire || false,
         alerte: patient.alerte || false,
+        ethnie: patient.ethnie || "",
+        region: patient.region || "",
+        District: patient.District || "",
+        Village: patient.Village || "",
       })
     } catch (error) {
       toast.showError(`Erreur lors du chargement du patient: ${error.message}`)
@@ -126,9 +147,19 @@ export default function PatientFormScreen() {
   // Définir les étapes du formulaire
   const steps = [
     {
-      title: "Informations personnelles",
+      title: "Références dossier",
       component: (
         <View>
+           <CheckboxField
+            label="Hors haire"
+            checked={form.hors_haire}
+            onValueChange={(value) => handleChange("hors_haire", value)}
+          />
+          <CheckboxField
+            label="Alerte"
+            checked={form.alerte}
+            onValueChange={(value) => handleChange("alerte", value)}
+          />
           <TextField
             label="Nom"
             value={form.nom}
@@ -142,6 +173,20 @@ export default function PatientFormScreen() {
             onChangeText={(value) => handleChange("prenom", value)}
             placeholder="Entrez le prénom"
             required
+          />
+           <SelectField
+            label="Ethnie"
+            value={form.ethnie}
+            onValueChange={(value) => handleChange("ethnie", value)}
+            options={EthnieOption}
+            placeholder="Sélectionnez l'ethnie"
+           
+          />
+           <TextField
+            label="Profession"
+            value={form.profession}
+            onChangeText={(value) => handleChange("profession", value)}
+            placeholder="Entrez la profession"
           />
           <TextField
             label="Date de naissance"
@@ -164,27 +209,10 @@ export default function PatientFormScreen() {
       ),
     },
     {
-      title: "Coordonnées",
+      title: "Famille",
       component: (
         <View>
-          <TextField
-            label="Téléphone principal"
-            value={form.telephone1}
-            onChangeText={(value) => handleChange("telephone1", value)}
-            placeholder="Entrez le numéro de téléphone"
-            inputProps={{
-              keyboardType: "phone-pad",
-            }}
-          />
-          <TextField
-            label="Téléphone secondaire"
-            value={form.telephone_2}
-            onChangeText={(value) => handleChange("telephone_2", value)}
-            placeholder="Entrez le numéro de téléphone secondaire"
-            inputProps={{
-              keyboardType: "phone-pad",
-            }}
-          />
+          
           <TextField
             label="Email"
             value={form.email}
@@ -219,31 +247,44 @@ export default function PatientFormScreen() {
       ),
     },
     {
-      title: "Informations complémentaires",
+      title: "Domiciliation",
       component: (
         <View>
+        <TextField
+        label="Région"
+        value={form.region}
+        onChangeText={(value) => handleChange("region", value)}
+        placeholder="Entrez la région"
+        />
+        <TextField
+        label="District"
+        value={form.District}
+        onChangeText={(value) => handleChange("District", value)}
+        placeholder="Entrez le district"
+        />
+        <TextField
+        label="Village"
+        value={form.Village}
+        onChangeText={(value) => handleChange("Village", value)}
+        placeholder="Entrez le village"
+        />
+        <TextField
+            label="Tel Perso"
+            value={form.telephone1}
+            onChangeText={(value) => handleChange("telephone1", value)}
+            placeholder="Entrez le numéro de téléphone"
+            inputProps={{
+              keyboardType: "phone-pad",
+            }}
+          />
           <TextField
-            label="Profession"
-            value={form.profession}
-            onChangeText={(value) => handleChange("profession", value)}
-            placeholder="Entrez la profession"
-          />
-          <SelectField
-            label="Statut matrimonial"
-            value={form.statut_matrimonial}
-            onValueChange={(value) => handleChange("statut_matrimonial", value)}
-            options={statutMatrimonialOptions}
-            placeholder="Sélectionnez le statut matrimonial"
-          />
-          <CheckboxField
-            label="Hors haire"
-            checked={form.hors_haire}
-            onValueChange={(value) => handleChange("hors_haire", value)}
-          />
-          <CheckboxField
-            label="Alerte"
-            checked={form.alerte}
-            onValueChange={(value) => handleChange("alerte", value)}
+            label="Tel contact"
+            value={form.telephone_2}
+            onChangeText={(value) => handleChange("telephone_2", value)}
+            placeholder="Entrez le numéro de téléphone secondaire"
+            inputProps={{
+              keyboardType: "phone-pad",
+            }}
           />
         </View>
       ),
@@ -251,9 +292,18 @@ export default function PatientFormScreen() {
   ]
 
   return (
+   
     <SafeAreaView style={styles.container}>
       <Header title={isEditing ? "Modifier un patient" : "Ajouter un patient"} />
+      {/* <KeyboardAwareScrollView
+      enableOnAndroid={true}
+      enableAutomaticScroll={true}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1 }}
+    > */}
       <FormStepper steps={steps} onComplete={handleSubmit} onCancel={handleCancel} loading={loading} />
+      {/* </KeyboardAwareScrollView> */}
+   
     </SafeAreaView>
   )
 }

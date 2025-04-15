@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react"
 import { View, Text, StyleSheet, ScrollView, Animated, Dimensions } from "react-native"
 import Button from "../buttons/Button"
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 /**
  * Composant pour diviser un formulaire en étapes
@@ -86,6 +88,12 @@ const FormStepper = ({ steps = [], onComplete, onCancel, loading = false }) => {
       <Text style={styles.stepTitle}>{steps[currentStep]?.title || ""}</Text>
 
       {/* Contenu des étapes */}
+      <KeyboardAwareScrollView
+      enableOnAndroid={true}
+      enableAutomaticScroll={true}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <ScrollView
         ref={scrollViewRef}
         horizontal
@@ -102,6 +110,8 @@ const FormStepper = ({ steps = [], onComplete, onCancel, loading = false }) => {
           </View>
         ))}
       </ScrollView>
+      </KeyboardAwareScrollView>
+
 
       {/* Boutons de navigation */}
       <View style={styles.buttonsContainer}>
