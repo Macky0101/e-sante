@@ -37,6 +37,12 @@ export default function PlanningScreen() {
   const handlePatientPress = (patient, action) => {
     if (action === "details") {
       router.push({
+        pathname: "/(screens)/planning/planning-details",
+        params: { id: patient.id },
+      })
+    }
+    if (action === "patient-details") {
+      router.push({
         pathname: "/(screens)/patients/patient-details",
         params: { id: patient.id },
       })
