@@ -1,22 +1,11 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  StatusBar,
-} from "react-native";
-import { useRouter } from "expo-router";
-import {
-  Ionicons,
-  FontAwesome5,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
+"use client"
+
+import { useState } from "react"
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, StatusBar } from "react-native"
+import { useRouter } from "expo-router"
+import { Ionicons, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons"
+import { DrawerActions, useNavigation } from "@react-navigation/native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 // Données des spécialités médicales
 const specialties = [
@@ -45,7 +34,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#E91E63",
     description: "Suivi des accouchements",
-    route: "/(screens)/cpn",
+    route: "/(screens)/accouchements/accouchements",
   },
   {
     id: "2",
@@ -54,7 +43,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#2196F3",
     description: "Consultations Prénatales",
-    route: "/(screens)/accouchements",
+    route: "/(screens)/cpn/cpn",
   },
   {
     id: "5",
@@ -63,7 +52,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#F44336",
     description: "Consultations Post Natales",
-    route: "/(screens)/accouchements",
+    route: "/(screens)/cpon/cpon",
   },
   {
     id: "4",
@@ -72,7 +61,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#FF9800",
     description: "Suivi des avortements",
-    route: "/(screens)/accouchements",
+    route: "/(screens)/avortement/avortement",
   },
   {
     id: "6",
@@ -81,7 +70,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#9C27B0",
     description: "Gestion planning familial",
-    route: "/(screens)/accouchements",
+    route: "/(screens)/planning/planning",
   },
   {
     id: "7",
@@ -90,7 +79,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#00BCD4",
     description: "Gestion des vaccinations",
-    route: "/(screens)/accouchements",
+    route: "/(screens)/vaccination/vaccination",
   },
   {
     id: "8",
@@ -99,7 +88,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#8BC34A",
     description: "Protection maternelle infantile",
-    route: "/(screens)/accouchements",
+    route: "/(screens)/suivi/suivi",
   },
   {
     id: "9",
@@ -108,7 +97,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#607D8B",
     description: "Suivi des maladies chroniques",
-    route: "/(screens)/accouchements",
+    route: "/(screens)/chronique/chronique",
   },
   {
     id: "10",
@@ -117,7 +106,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#795548",
     description: "Gestion de la fonction dentaire",
-    route: "/(screens)/accouchements",
+    route: "/(screens)/dentaire/dentaire",
   },
   {
     id: "11",
@@ -126,7 +115,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#3F51B5",
     description: "Faire des analyses",
-    route: "/(screens)/accouchements",
+    route: "/(screens)/analyses/analyses",
   },
   {
     id: "12",
@@ -135,64 +124,62 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#FF5722",
     description: "Faire des bilans médicaux",
-    route: "/(screens)/accouchements",
+    route: "/(screens)/bilans/bilans",
   },
-];
+]
 
 // Composant pour afficher une icône selon son type
 const DynamicIcon = ({ name, type, size, color }) => {
   if (type === "ionicons") {
-    return <Ionicons name={name} size={size} color={color} />;
+    return <Ionicons name={name} size={size} color={color} />
   } else if (type === "fontawesome") {
-    return <FontAwesome5 name={name} size={size} color={color} />;
+    return <FontAwesome5 name={name} size={size} color={color} />
   } else if (type === "materialcommunity") {
-    return <MaterialCommunityIcons name={name} size={size} color={color} />;
+    return <MaterialCommunityIcons name={name} size={size} color={color} />
   }
-  return null;
-};
+  return null
+}
 
 // Composant pour une carte de spécialité
 const SpecialtyCard = ({ item, onPress }) => {
   return (
-    <TouchableOpacity
-      style={styles.specialtyCard}
-      onPress={() => onPress(item)}
-      activeOpacity={0.7}
-    >
+    <TouchableOpacity style={styles.specialtyCard} onPress={() => onPress(item)} activeOpacity={0.7}>
       <View style={[styles.iconContainer, { backgroundColor: item.color }]}>
-        <DynamicIcon
-          name={item.icon}
-          type={item.iconType}
-          size={24}
-          color="#FFF"
-        />
+        <DynamicIcon name={item.icon} type={item.iconType} size={24} color="#FFF" />
       </View>
       <Text style={styles.specialtyName}>{item.name}</Text>
       <Text style={styles.specialtyDescription} numberOfLines={2}>
         {item.description}
       </Text>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 export default function HomePage() {
-  const router = useRouter();
-  const navigation = useNavigation();
-  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter()
+  const navigation = useNavigation()
+  const [searchQuery, setSearchQuery] = useState("")
 
   // Filtrer les spécialités en fonction de la recherche
   const filteredSpecialties = searchQuery
     ? specialties.filter(
         (item) =>
           item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchQuery.toLowerCase())
+          item.description.toLowerCase().includes(searchQuery.toLowerCase()),
       )
-    : specialties;
+    : specialties
 
   const handleSpecialtyPress = (specialty) => {
-    console.log(`Navigating to ${specialty.name}`);
-    router.push(specialty.route);
-  };
+    console.log(`Navigating to ${specialty.name} (${specialty.route})`)
+
+    // Vérifier si la route existe avant de naviguer
+    if (specialty.route) {
+      router.push(specialty.route)
+    } else {
+      console.error(`Route non définie pour la spécialité ${specialty.name}`)
+      // Vous pourriez afficher un message à l'utilisateur ici
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -201,10 +188,7 @@ export default function HomePage() {
       {/* En-tête */}
       <View style={styles.header}>
         <View style={styles.headerTop}>
-          <TouchableOpacity
-            style={styles.menuButton}
-            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-          >
+          <TouchableOpacity style={styles.menuButton} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
             <Ionicons name="menu" size={28} color="#2b7a78" />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
@@ -218,12 +202,7 @@ export default function HomePage() {
 
         {/* Barre de recherche */}
         <View style={styles.searchContainer}>
-          <Ionicons
-            name="search"
-            size={20}
-            color="#666"
-            style={styles.searchIcon}
-          />
+          <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
           <TextInput
             style={styles.searchInput}
             placeholder="Rechercher une spécialité..."
@@ -247,17 +226,13 @@ export default function HomePage() {
 
           <View style={styles.specialtiesGrid}>
             {filteredSpecialties.map((specialty) => (
-              <SpecialtyCard
-                key={specialty.id}
-                item={specialty}
-                onPress={handleSpecialtyPress}
-              />
+              <SpecialtyCard key={specialty.id} item={specialty} onPress={handleSpecialtyPress} />
             ))}
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -367,37 +342,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#666",
   },
-  articlesContainer: {
-    marginLeft: -8,
-    paddingLeft: 8,
-  },
-  articleCard: {
-    width: 280,
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    marginRight: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-    overflow: "hidden",
-  },
-  articleImage: {
-    width: "100%",
-    height: 140,
-  },
-  articleContent: {
-    padding: 12,
-  },
-  articleTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 8,
-  },
-  articleDate: {
-    fontSize: 12,
-    color: "#666",
-  },
-});
+})

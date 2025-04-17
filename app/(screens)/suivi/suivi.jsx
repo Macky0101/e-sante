@@ -10,7 +10,7 @@ import { useToast } from "../../components/toast/ToastProvider"
 import patientService from "../../services/patientService"
 import PatientListShared from "../../components/shared/PatientListShared"
 
-export default function DentaireScreen() {
+export default function SuiviScreen() {
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
@@ -26,7 +26,7 @@ export default function DentaireScreen() {
       // Utiliser le service patient avec le paramètre specialty
       const data = await patientService.getPatients({
         search: searchQuery,
-        specialty: "dentaire",
+        specialty: "suivi",
       })
       setPatients(data)
     } catch (error) {
@@ -40,13 +40,19 @@ export default function DentaireScreen() {
     if (action === "details") {
       // Naviguer vers les détails du patient
       router.push({
-        pathname: "/(screens)/patients/patient-details",
+        pathname: "/(screens)/suivi/suivi-details",
         params: { id: patient.id },
       })
-    } else if (action === "form") {
-      // Naviguer vers le formulaire dentaire avec l'ID du patient
+    } 
+    if (action === "patient-details") {
+        router.push({
+          pathname: "/(screens)/patients/patient-details",
+          params: { id: patient.id },
+        })
+      }else if (action === "form") {
+      // Naviguer vers le formulaire de suivi avec l'ID du patient
       router.push({
-        pathname: "/(screens)/dentaire/dentaire-form",
+        pathname: "/(screens)/suivi/suivi-form",
         params: { patientId: patient.id },
       })
     }
@@ -63,14 +69,14 @@ export default function DentaireScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Soins dentaires" />
+      <Header title="Suivi médical" />
       <PatientListShared
         patients={patients}
         loading={loading}
         onPatientPress={handlePatientPress}
         onAddPress={handleAddPatient}
         onSearch={handleSearch}
-        specialtyType="Soins dentaires"
+        specialtyType="Suivi médical"
       />
     </SafeAreaView>
   )

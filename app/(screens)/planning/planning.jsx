@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { StyleSheet } from "react-native"
 import { useRouter } from "expo-router"
@@ -10,7 +8,7 @@ import { useToast } from "../../components/toast/ToastProvider"
 import patientService from "../../services/patientService"
 import PatientListShared from "../../components/shared/PatientListShared"
 
-export default function DentaireScreen() {
+export default function PlanningScreen() {
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
@@ -26,7 +24,7 @@ export default function DentaireScreen() {
       // Utiliser le service patient avec le paramètre specialty
       const data = await patientService.getPatients({
         search: searchQuery,
-        specialty: "dentaire",
+        specialty: "planning",
       })
       setPatients(data)
     } catch (error) {
@@ -38,22 +36,20 @@ export default function DentaireScreen() {
 
   const handlePatientPress = (patient, action) => {
     if (action === "details") {
-      // Naviguer vers les détails du patient
       router.push({
         pathname: "/(screens)/patients/patient-details",
         params: { id: patient.id },
       })
     } else if (action === "form") {
-      // Naviguer vers le formulaire dentaire avec l'ID du patient
+      // planning avec l'ID du patient
       router.push({
-        pathname: "/(screens)/dentaire/dentaire-form",
+        pathname: "/(screens)/planning/planning-form",
         params: { patientId: patient.id },
       })
     }
   }
 
   const handleAddPatient = () => {
-    // Naviguer vers le formulaire d'ajout de patient
     router.push("/(screens)/patients/patient-form")
   }
 
@@ -63,14 +59,14 @@ export default function DentaireScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Soins dentaires" />
+      <Header title="Planning familial" />
       <PatientListShared
         patients={patients}
         loading={loading}
         onPatientPress={handlePatientPress}
         onAddPress={handleAddPatient}
         onSearch={handleSearch}
-        specialtyType="Soins dentaires"
+        specialtyType="Planning familial"
       />
     </SafeAreaView>
   )

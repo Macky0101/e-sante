@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { StyleSheet } from "react-native"
 import { useRouter } from "expo-router"
@@ -10,7 +8,7 @@ import { useToast } from "../../components/toast/ToastProvider"
 import patientService from "../../services/patientService"
 import PatientListShared from "../../components/shared/PatientListShared"
 
-export default function DentaireScreen() {
+export default function CpnScreen() {
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
@@ -26,7 +24,7 @@ export default function DentaireScreen() {
       // Utiliser le service patient avec le paramètre specialty
       const data = await patientService.getPatients({
         search: searchQuery,
-        specialty: "dentaire",
+        specialty: "cpn",
       })
       setPatients(data)
     } catch (error) {
@@ -40,13 +38,20 @@ export default function DentaireScreen() {
     if (action === "details") {
       // Naviguer vers les détails du patient
       router.push({
-        pathname: "/(screens)/patients/patient-details",
+        pathname: "/(screens)/cpn/cpn-details",
         params: { id: patient.id },
       })
-    } else if (action === "form") {
-      // Naviguer vers le formulaire dentaire avec l'ID du patient
+    } 
+    if (action === "patient-details") {
+        router.push({
+          pathname: "/(screens)/patients/patient-details",
+          params: { id: patient.id },
+        })
+      }
+      else if (action === "form") {
+      // Naviguer vers le formulaire CPN avec l'ID du patient
       router.push({
-        pathname: "/(screens)/dentaire/dentaire-form",
+        pathname: "/(screens)/cpn/cpn-form",
         params: { patientId: patient.id },
       })
     }
@@ -63,14 +68,14 @@ export default function DentaireScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Soins dentaires" />
+      <Header title="Consultations Prénatales" />
       <PatientListShared
         patients={patients}
         loading={loading}
         onPatientPress={handlePatientPress}
         onAddPress={handleAddPatient}
         onSearch={handleSearch}
-        specialtyType="Soins dentaires"
+        specialtyType="Consultations Prénatales"
       />
     </SafeAreaView>
   )
