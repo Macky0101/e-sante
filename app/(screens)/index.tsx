@@ -34,7 +34,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#E91E63",
     description: "Suivi des accouchements",
-    route: "/(screens)/accouchements/accouchements",
+    route: "/(screens)/accouchement/accouchements",
   },
   {
     id: "2",
