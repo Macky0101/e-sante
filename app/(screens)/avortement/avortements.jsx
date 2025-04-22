@@ -8,7 +8,7 @@ import { useToast } from "../../components/toast/ToastProvider"
 import patientService from "../../services/patientService"
 import PatientListShared from "../../components/shared/PatientListShared"
 
-export default function ConsultationsScreen() {
+export default function AvortementsScreen() {
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
@@ -24,7 +24,7 @@ export default function ConsultationsScreen() {
       // Utiliser le service patient avec le paramètre specialty
       const data = await patientService.getPatients({
         search: searchQuery,
-        specialty: "Consultations",
+        specialty: "avortements",
       })
       setPatients(data)
     } catch (error) {
@@ -38,7 +38,7 @@ export default function ConsultationsScreen() {
     if (action === "details") {
       // Naviguer vers les détails du patient
       router.push({
-        pathname: "/(screens)/consultation/liste-consultations",
+        pathname: "/(screens)/avortement/liste-avortements",
         params: { id: patient.id },
       })
     } 
@@ -49,9 +49,9 @@ export default function ConsultationsScreen() {
         })
       }
       else if (action === "form") {
-      // Naviguer vers le formulaire Consultations avec l'ID du patient
+      // Naviguer vers le formulaire avortements avec l'ID du patient
       router.push({
-        pathname: "/(screens)/consultation/consultation-form",
+        pathname: "/(screens)/avortement/avortement-form",
         params: { patientId: patient.id },
       })
     }
@@ -59,7 +59,7 @@ export default function ConsultationsScreen() {
 
   const handleAddPatient = () => {
     // Naviguer vers le formulaire d'ajout de patient
-    router.push("/(screens)/Consultations/consultation-form")
+    router.push("/(screens)/avortements/avortement-form")
   }
 
   const handleSearch = (query) => {  
@@ -68,14 +68,14 @@ export default function ConsultationsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Consultations " />
+      <Header title="Avortements " />
       <PatientListShared
         patients={patients}
         loading={loading}
         onPatientPress={handlePatientPress}
         onAddPress={handleAddPatient}
         onSearch={handleSearch}
-        specialtyType="consultation"
+        specialtyType="avortement"
       />
     </SafeAreaView>
   )

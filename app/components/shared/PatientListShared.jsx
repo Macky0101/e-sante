@@ -31,8 +31,44 @@ const PatientListShared = ({
     }
   }
 
+  const getActionText = (specialty) => {
+    const map = {
+      accouchement: "Enregistrer un accouchement",
+      consultation: "Ajouter une consultation",
+      prénatale: "Ajouter un suivi prénatal",
+      postnatal: "Ajouter un suivi postnatal",
+      consultation: "Enregistrer une vaccination",
+      avortement: "Enregistrer un avortement",
+      // Ajoute d'autres spécialités ici si besoin
+    }
+  
+    const lower = specialty.toLowerCase()
+    const entry = Object.entries(map).find(([key]) => lower.includes(key))
+    return entry ? entry[1] : "Remplir un formulaire"
+  }
+  
+  
+  const getDetailsText = (specialty) => {
+    const map = {
+      accouchement: "Voir les accouchements",
+      consultation: "Voir les consultations",
+      prénatale: "Voir les suivis prénatals",
+      postnatal: "Voir les suivis postnataux",
+      vaccination: "Voir les vaccinations",
+      avortement: "Voir les avortements",
+      
+    }
+  
+    const lower = specialty.toLowerCase()
+    const entry = Object.entries(map).find(([key]) => lower.includes(key))
+    return entry ? entry[1] : "Consulter les détails de la spécialité"
+  }
+  
   const handlePatientPress = (patient) => {
     if (onPatientPress) {
+      const actionText = getActionText(specialtyType)
+      const detailsText = getDetailsText(specialtyType)
+  
       Alert.alert(
         "Options",
         `Que souhaitez-vous faire avec ${patient.nom} ${patient.prenom} ?`,
@@ -41,12 +77,12 @@ const PatientListShared = ({
             text: "Consulter les détails du patient",
             onPress: () => onPatientPress(patient, "patient-details"),
           },
-          {
-            text: "Consulter les détails de la spécialité",
+          { 
+            text: detailsText,
             onPress: () => onPatientPress(patient, "details"),
           },
           {
-            text: "Remplir un formulaire",
+            text: actionText,
             onPress: () => onPatientPress(patient, "form"),
           },
           {
@@ -58,6 +94,8 @@ const PatientListShared = ({
       )
     }
   }
+     
+  
 //   const handlePatientPress = (patient) => {
 //     if (onPatientPress) {
 //       Alert.alert(

@@ -24,7 +24,7 @@ export default function AccouchementsScreen() {
       // Utiliser le service patient avec le paramètre specialty
       const data = await patientService.getPatients({
         search: searchQuery,
-        specialty: "accouchements",
+        specialty: "Accouchements",
       })
       setPatients(data)
     } catch (error) {
@@ -75,7 +75,7 @@ export default function AccouchementsScreen() {
         onPatientPress={handlePatientPress}
         onAddPress={handleAddPatient}
         onSearch={handleSearch}
-        specialtyType="accouchements Prénatales"
+        specialtyType="accouchements"
       />
     </SafeAreaView>
   )

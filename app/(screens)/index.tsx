@@ -61,7 +61,7 @@ const specialties = [
     iconType: "materialcommunity",
     color: "#FF9800",
     description: "Suivi des avortements",
-    route: "/(screens)/avortement/avortement",
+    route: "/(screens)/avortement/avortements",
   },
   {
     id: "6",

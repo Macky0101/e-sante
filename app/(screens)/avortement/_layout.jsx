@@ -1,20 +1,20 @@
 import { Stack } from "expo-router";
 
-export default function AccouchementsLayout() {
+export default function ConsultationsLayout() {
   return (
     <Stack screenOptions={{headerShown: false}}>
       <Stack.Screen
-        name="accouchements"
+        name="consultations"
         options={{
           title: "Liste des patients"
         }}
-      />  
+      />
       <Stack.Screen
         name="[id]"
         options={{
-          title: "Détails  du patient"
+          title: "Détails du patient"
         }}
       />
-    </Stack> 
+    </Stack>
   );
 }
