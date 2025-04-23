@@ -118,7 +118,7 @@ const CustomDrawerContent = (props) => {
 
       {/* Footer */}
       <View style={styles.bottomDrawerSection}>
-        <TouchableOpacity style={styles.signOutButton} onPress={() => router.push("/auth/login")}>
+        <TouchableOpacity style={styles.signOutButton} onPress={() => router.replace("/login")}>
           <LinearGradient
             colors={["#2b7a78", "#3aafa9"]}
             start={{ x: 0, y: 0 }}

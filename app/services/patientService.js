@@ -109,3 +109,80 @@ const patientService = {
 }
 
 export default patientService
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { getList, getById, create, update, removeWithConfirmation } from "./api"
+
+// // Point de terminaison de l'API pour les patients
+// const ENDPOINT = "/dossiers"
+
+// /**
+//  * Service pour gérer les patients
+//  */
+// const patientService = {
+//   /**
+//    * Récupérer la liste des patients
+//    * @param {Object} params - Paramètres de filtrage et pagination
+//    * @returns {Promise<Array>} - Liste des patients
+//    */
+//   getPatients: (params = {}) => {
+//     return getList(ENDPOINT, params)
+//   },
+
+//   /**
+//    * Récupérer un patient par son ID
+//    * @param {string|number} id - ID du patient
+//    * @returns {Promise<Object>} - Patient
+//    */
+//   getPatientById: (id) => {
+//     return getById(ENDPOINT, id)
+//   },
+
+//   /**
+//    * Créer un nouveau patient
+//    * @param {Object} data - Données du patient
+//    * @returns {Promise<Object>} - Patient créé
+//    */
+//   createPatient: (data) => {
+//     return create(ENDPOINT, data)
+//   },
+
+//   /**
+//    * Mettre à jour un patient existant
+//    * @param {string|number} id - ID du patient
+//    * @param {Object} data - Données mises à jour
+//    * @returns {Promise<Object>} - Patient mis à jour
+//    */
+//   updatePatient: (id, data) => {
+//     return update(ENDPOINT, id, data)
+//   },
+
+//   /**
+//    * Supprimer un patient
+//    * @param {string|number} id - ID du patient
+//    * @returns {Promise<Object>} - Résultat de la suppression
+//    */
+//   deletePatient: (id) => {
+//     return removeWithConfirmation(
+//       ENDPOINT,
+//       id,
+//       "Êtes-vous sûr de vouloir supprimer ce patient ? Cette action est irréversible.",
+//     )
+//   },
+// }
+
+// export default patientService

@@ -1,11 +1,11 @@
-"use client"
-
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, StatusBar } from "react-native"
 import { useRouter } from "expo-router"
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons"
 import { DrawerActions, useNavigation } from "@react-navigation/native"
 import { SafeAreaView } from "react-native-safe-area-context"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 // Données des spécialités médicales
 const specialties = [
@@ -157,6 +157,18 @@ const SpecialtyCard = ({ item, onPress }) => {
 
 export default function HomePage() {
   const router = useRouter()
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+      if (isLoggedIn === "true") {
+        router.replace("/(screens)");
+      } else {
+        router.replace("/login");
+      }
+    };
+  
+    checkAuth();
+  }, []);
   const navigation = useNavigation()
   const [searchQuery, setSearchQuery] = useState("")
 
