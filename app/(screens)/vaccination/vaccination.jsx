@@ -8,7 +8,7 @@ import { useToast } from "../../components/toast/ToastProvider"
 import patientService from "../../services/patientService"
 import PatientListShared from "../../components/shared/PatientListShared"
 
-export default function AvortementsScreen() {
+export default function VaccinationsScreen() {
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
@@ -24,7 +24,7 @@ export default function AvortementsScreen() {
       // Utiliser le service patient avec le paramètre specialty
       const data = await patientService.getPatients({
         search: searchQuery,
-        specialty: "avortements",
+        specialty: "vaccinations",
       })
       setPatients(data)
     } catch (error) {
@@ -38,20 +38,20 @@ export default function AvortementsScreen() {
     if (action === "details") {
       // Naviguer vers les détails du patient
       router.push({
-        pathname: "/(screens)/avortement/liste-avortements",
+        pathname: "/(screens)/vaccination/liste-vaccinations",
         params: { id: patient.id },
       })
     } 
     if (action === "patient-details") {
         router.push({
-          pathname: "/(screens)/avortement/detail-avortement",
+          pathname: "/(screens)/vaccination/detail-vaccination",
           params: { id: patient.id },
         })
       }
       else if (action === "form") {
-      // Naviguer vers le formulaire avortements avec l'ID du patient
+      // Naviguer vers le formulaire vaccinations avec l'ID du patient
       router.push({
-        pathname: "/(screens)/avortement/avortement-form",
+        pathname: "/(screens)/vaccination/vaccination-form",
         params: { patientId: patient.id },
       })
     }
@@ -59,7 +59,7 @@ export default function AvortementsScreen() {
 
   const handleAddPatient = () => {
     // Naviguer vers le formulaire d'ajout de patient
-    router.push("/(screens)/avortement/avortement-form")
+    router.push("/(screens)/vaccination/vaccination-form")
   }
 
   const handleSearch = (query) => {  
@@ -68,14 +68,14 @@ export default function AvortementsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Avortements " />
+      <Header title="vaccinations " />
       <PatientListShared
         patients={patients}
         loading={loading}
         onPatientPress={handlePatientPress}
         onAddPress={handleAddPatient}
         onSearch={handleSearch}
-        specialtyType="avortement"
+        specialtyType="vaccination"
       />
     </SafeAreaView>
   )
