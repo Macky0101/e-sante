@@ -78,7 +78,8 @@ export default appSchema({
         { name: 'updated_at', type: 'number' }
       ]
     }),
-    // Analyses
+
+    // dentaires
     tableSchema({
       name: 'dentaires',
       columns: [
@@ -87,6 +88,141 @@ export default appSchema({
         { name: 'Nb_extraction', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' }
+      ]
+    }),
+
+    // pharmacie
+    tableSchema({
+      name: 'pharmacie_patients',
+      columns: [
+        { name: 'PharmaciePatientId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // Planning
+    tableSchema({
+      name: 'plannings',
+      columns: [
+        { name: 'PlanningId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    //pmis
+    tableSchema({
+      name: 'pmis',
+      columns: [
+        { name: 'PmisId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    //suivis
+    tableSchema({
+      name: 'suivis',
+      columns: [
+        { name: 'SuiviId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // Vaccins
+    tableSchema({
+      name: 'vaccins',
+      columns: [
+        { name: 'VaccinId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // SuiviNouveauNee
+    tableSchema({
+      name: 'suiveillance_nouveau_nes',
+      columns: [
+        { name: 'SuiviNouveauNeId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // SurveillanceMere
+    tableSchema({
+      name: 'surveillance_meres',
+      columns: [
+        { name: 'SurveillanceMereId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // Diagnostic
+    tableSchema({
+      name: 'diagnostics',
+      columns: [
+        { name: 'DiagnosticId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // Avortement
+    tableSchema({
+      name: 'avortements',
+      columns: [
+        { name: 'AvortementId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // MaladieChronique
+    tableSchema({
+      name: 'maladie_choniques',
+      columns: [
+        { name: 'MaladieChroniqueId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // regions
+    tableSchema({
+      name: 'regions',
+      columns: [
+        { name: 'RegionId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    //districts
+    tableSchema({
+      name: 'districts',
+      columns: [
+        { name: 'DistrictId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // cercles
+    tableSchema({
+      name: 'cercles',
+      columns: [
+        { name: 'CercleId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // communes
+    tableSchema({
+      name: 'communes',
+      columns: [
+        { name: 'CommuneId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // Quartiers
+    tableSchema({
+      name: 'quartiers',
+      columns: [
+        { name: 'QuartierId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // Arrondissement
+    tableSchema({
+      name: 'arrondissements',
+      columns: [
+        { name: 'ArrondissementId', type: 'number', isIndexed: true },
+      ]
+    }),
+    // Recettes
+    tableSchema({
+      name: 'recettes',
+      columns: [
+        { name: 'RecetteId', type: 'number', isIndexed: true },
       ]
     }),
 
