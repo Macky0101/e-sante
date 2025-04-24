@@ -38,7 +38,7 @@ export default function CpnScreen() {
     if (action === "details") {
       // Naviguer vers les détails du patient
       router.push({
-        pathname: "/(screens)/cpn/cpn-details",
+        pathname: "/(screens)/cpn/liste-cpn",
         params: { id: patient.id },
       })
     } 
@@ -75,7 +75,7 @@ export default function CpnScreen() {
         onPatientPress={handlePatientPress}
         onAddPress={handleAddPatient}
         onSearch={handleSearch}
-        specialtyType="Consultations Prénatales"
+        specialtyType="cpn"
       />
     </SafeAreaView>
   )

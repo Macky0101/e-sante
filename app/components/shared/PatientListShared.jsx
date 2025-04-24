@@ -39,6 +39,7 @@ const PatientListShared = ({
       postnatal: "Ajouter un suivi postnatal",
       consultation: "Enregistrer une vaccination",
       avortement: "Enregistrer un avortement",
+      cpn: "Enregistrer un cpn"
       // Ajoute d'autres spécialités ici si besoin
     }
   
@@ -56,6 +57,7 @@ const PatientListShared = ({
       postnatal: "Voir les suivis postnataux",
       vaccination: "Voir les vaccinations",
       avortement: "Voir les avortements",
+      cpn: "voir les cpn"
       
     }
   
