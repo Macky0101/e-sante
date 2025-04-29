@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { View, StyleSheet } from "react-native"
 import { useRouter, useLocalSearchParams } from "expo-router"
@@ -13,9 +11,16 @@ import CheckboxField from "../../components/form/CheckboxField"
 import FormStepper from "../../components/stepper/FormStepper"
 import { useToast } from "../../components/toast/ToastProvider"
 import { useLoading } from "../../components/loading/LoadingProvider"
-import patientService from "../../services/patientService"
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import {
+  createDossier,
+  getAllDossiers,
+  getDossierById,
+  updateDossier,
+  deleteDossier,
+  deleteAllDossiers,
+  findDossiersByField
+} from '../../database/helpers/helperDossier';
 // Options pour le genre
 const genreOptions = [
   { value: 1, label: "Homme" },
@@ -54,28 +59,50 @@ export default function PatientFormScreen() {
 
   // État du formulaire
   const [form, setForm] = useState({
-    nom: "",
-    prenom: "",
-    date_naissance: "",
-    genre: "",
-    profession: "",
-    telephone1: "",
-    telephone_2: "",
-    email: "",
-    adresse: "",
-    ville: "",
-    code_postal: "",
-    statut_matrimonial: "",
-    hors_haire: false,
-    alerte: false,
-    ethnie:"",
-    region: "",
-    District: "",
-    Village: "",
-  })
+   numero_dossier: "",
+   hors_haire: false,
+   alerte: false,
+   nom: "",
+   prenom: "",
+   ethnie: "",
+   profession: "",
+   date_naissance: "",
+   genre: "",
+   prenom_pere: "",
+   nom_mere: "",
+   prenom_mere: "",
+   nom_conjoint: "",
+   prenom_conjoint: "",
+   credit: "",
+   nina: "",
+   amo: "",
+   mutuelle: "",
+   autre_pieces: "",
+   statut_matrimonial: "",
+   date_creation: "",
+   quartier: "",
+   telephone1: "",
+   telephone_2: "",
+   etat: "",
 
+  })
+ const listeDossiers = async () => {
+  try {
+    const dossiers = await getAllDossiers()
+    // console.log("Liste des dossiers:", dossiers)
+    // console.log("liste des dossier", JSON.stringify(dossiers), null, 2)
+    const rawDossiers = dossiers.map(dossier => dossier._raw);
+    console.log("Liste des dossiers:", JSON.stringify(rawDossiers, null, 2));
+
+
+  } catch (error) {
+    console.error("Erreur lors de la récupération des dossiers:", error)
+    
+  }
+ }
   // Charger les données du patient si en mode édition
   useEffect(() => {
+    listeDossiers();
     if (isEditing) {
       loadPatient()
     }
@@ -84,7 +111,7 @@ export default function PatientFormScreen() {
   const loadPatient = async () => {
     try {
       showLoading("Chargement des données du patient...")
-      const patient = await patientService.getPatientById(patientId)
+      const patient = await getDossierById(patientId)
       setForm({
         nom: patient.nom || "",
         prenom: patient.prenom || "",
@@ -102,8 +129,8 @@ export default function PatientFormScreen() {
         alerte: patient.alerte || false,
         ethnie: patient.ethnie || "",
         region: patient.region || "",
-        District: patient.District || "",
-        Village: patient.Village || "",
+        district: patient.district || "",
+        village: patient.village || "",
       })
     } catch (error) {
       toast.showError(`Erreur lors du chargement du patient: ${error.message}`)
@@ -120,22 +147,50 @@ export default function PatientFormScreen() {
     }))
   }
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!nom.trim()) {
+      newErrors.nom = "Le nom est requis";
+    }
+    if (!prenom.trim()) {
+      newErrors.prenom = "Le prénom est requis";
+    }
+    if (!date_naissance.trim()) {
+      newErrors.date_naissance = "La date de naissance est requise";
+    } else if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date_naissance)) {
+      newErrors.date_naissance = "Le format de la date de naissance est invalide (JJ/MM/AAAA)";
+    }
+    if (!genre) {
+      newErrors.genre = "Le genre est requis";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }};
+
   // Soumettre le formulaire
   const handleSubmit = async () => {
-    setLoading(true)
+
+    // if (!validateForm()) {
+    //   return;
+    // }
     try {
+      const loadingMessage = isEditing ? "Mise à jour du patient..." : "Création du patient..."
+      showLoading(loadingMessage)
       if (isEditing) {
-        await patientService.updatePatient(patientId, form)
+        await updateDossier(patientId, form)
         toast.showSuccess("Patient mis à jour avec succès")
-      } else {
-        await patientService.createPatient(form)
-        toast.showSuccess("Patient créé avec succès")
       }
+      else {
+        await createDossier(form)
+        toast.showSuccess("Patient créé avec succès")
+      } 
+      setLoading(false)
       router.back()
     } catch (error) {
       toast.showError(`Erreur: ${error.message}`)
-    } finally {
-      setLoading(false)
+    }finally {
+      hideLoading();
     }
   }
 

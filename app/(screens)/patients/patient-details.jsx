@@ -9,7 +9,15 @@ import Button from "../../components/buttons/Button"
 import LoadingIndicator from "../../components/loading/LoadingIndicator"
 import { useToast } from "../../components/toast/ToastProvider"
 import patientService from "../../services/patientService"
-
+import {
+  createDossier,
+  getAllDossiers,
+  getDossierById,
+  updateDossier,
+  deleteDossier,
+  deleteAllDossiers,
+  findDossiersByField
+} from '../../database/helpers/helperDossier';
 export default function PatientDetailsScreen() {
   const router = useRouter()
   const params = useLocalSearchParams()
@@ -26,7 +34,7 @@ export default function PatientDetailsScreen() {
   const loadPatient = async () => {
     try {
       setLoading(true)
-      const data = await patientService.getPatientById(patientId)
+      const data = await getDossierById(patientId)
       setPatient(data)
     } catch (error) {
       toast.showError(`Erreur lors du chargement du patient: ${error.message}`)

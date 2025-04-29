@@ -147,6 +147,38 @@ export default appSchema({
       ]
     }),
 
+    // modules
+    tableSchema({
+      name: 'modules',
+      columns: [
+        { name: 'ModuleId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    //profils
+    tableSchema({
+      name: 'profils',
+      columns: [
+        { name: 'ProfilId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // utilisateurs
+    tableSchema({
+      name: 'utilisateurs',
+      columns: [
+        { name: 'UtilisateurId', type: 'number', isIndexed: true },
+      ]
+    }),
+
+    // profil_modules
+    tableSchema({
+      name: 'profil_modules',
+      columns: [
+        { name: 'ProfilModuleId', type: 'number', isIndexed: true },
+      ]
+    }),
+
     // Diagnostic
     tableSchema({
       name: 'diagnostics',

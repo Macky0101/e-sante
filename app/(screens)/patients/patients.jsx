@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { StyleSheet } from "react-native"
 import { useRouter } from "expo-router"
@@ -9,6 +7,16 @@ import Header from "../../components/header/Header"
 import { useToast } from "../../components/toast/ToastProvider"
 import patientService from "../../services/patientService"
 import PatientList from "./components/PatientList"
+
+import {
+  createDossier,
+  getAllDossiers,
+  getDossierById,
+  updateDossier,
+  deleteDossier,
+  deleteAllDossiers,
+  findDossiersByField
+} from '../../database/helpers/helperDossier';
 
 export default function PatientsScreen() {
   const [patients, setPatients] = useState([])
@@ -23,7 +31,11 @@ export default function PatientsScreen() {
   const loadPatients = async (searchQuery = "") => {
     try {
       setLoading(true)
-      const data = await patientService.getPatients({ search: searchQuery })
+      const data = await getAllDossiers({ search: searchQuery })
+      console.log("Patients data:", data)
+      if (data.length === 0) {
+        toast.showInfo("Aucun patient trouvé.")
+      }
       setPatients(data)
     } catch (error) {
       toast.showError(`Erreur lors du chargement des patients: ${error.message}`)

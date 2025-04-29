@@ -19,30 +19,30 @@ export default class Dossier extends Model {
   }
 
   // Champs
-  @field('numero_dossier') numeroDossier
-  @field('hors_haire') horsHaire
+  @field('numero_dossier') numero_dossier
+  @field('hors_haire') hors_haire
   @field('alerte') alerte
   @field('nom') nom
   @field('prenom') prenom
   @field('ethnie') ethnie
   @field('profession') profession
-  @field('date_naissance') dateNaissance
+  @field('date_naissance') date_naissance
   @field('genre') genre
-  @field('prenom_pere') prenomPere
-  @field('nom_mere') nomMere
-  @field('prenom_mere') prenomMere
-  @field('nom_conjoint') nomConjoint
-  @field('prenom_conjoint') prenomConjoint
+  @field('prenom_pere') prenom_pere
+  @field('nom_mere') nom_mere
+  @field('prenom_mere') prenom_mere
+  @field('nom_conjoint') nom_conjoint
+  @field('prenom_conjoint') prenom_conjoint
   @field('credit') credit
   @field('nina') nina
   @field('amo') amo
   @field('mutuelle') mutuelle
-  @field('autre_pieces') autrePieces
-  @field('statut_matrimonial') statutMatrimonial
-  @field('date_creation') dateCreation
+  @field('autre_pieces') autre_pieces
+  @field('statut_matrimonial') statut_matrimonial
+  @field('date_creation') date_creation
   @field('quartier') quartier
   @field('telephone1') telephone1
-  @field('telephone_2') telephone2
+  @field('telephone_2') telephone_2
   @field('etat') etat
 
     // Relations
